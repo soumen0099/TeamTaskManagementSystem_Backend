@@ -13,7 +13,7 @@ const TeamsSchema = new mongoose.Schema({
   },
   owner:{
     type: ObjectId,
-    ref: "user"
+    ref: "Users"
   },
   members:[
     {
@@ -30,14 +30,14 @@ const TeamsSchema = new mongoose.Schema({
   ],
   task: {
     type: ObjectId,
-    ref: "Task"
+    ref: "Tasks"
   },
   createdAt: Date,
   updateAt: Date
 })
 
 
-const Teams = mongoose.Schema("Team", TeamsSchema);
+const Teams = mongoose.model("Teams", TeamsSchema);
 
 
 export default Teams; 

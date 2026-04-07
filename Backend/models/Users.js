@@ -31,14 +31,14 @@ const UsersSchema = new mongoose.Schema({
   team:[
     {
       type: ObjectId,
-      ref: "Team"
+      ref: "Teams"
     }
   ],
   createdAt: Date,
   updatedAt: Date
 })
 
-const Users = mongoose.model("User", UsersSchema);
+const Users = mongoose.model("Users", UsersSchema);
 
 
 export default Users;
