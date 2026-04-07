@@ -12,7 +12,7 @@ const TeamsSchema = new mongoose.Schema({
     default:""
   },
   owner:{
-    type: ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Users"
   },
   members:[
@@ -29,12 +29,10 @@ const TeamsSchema = new mongoose.Schema({
     }
   ],
   task: {
-    type: ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Tasks"
-  },
-  createdAt: Date,
-  updateAt: Date
-})
+  }
+},{ timestamps: true })
 
 
 const Teams = mongoose.model("Teams", TeamsSchema);

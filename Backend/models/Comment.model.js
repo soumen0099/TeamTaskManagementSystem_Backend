@@ -5,16 +5,15 @@ const commentsSchema = new mongoose.Schema({
   comments: [
    {   
      user: {
-      type: ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
       required: true
     },
     text: String,
-    createdAt: Date 
 
   }
   ]
-})
+},{ timestamps: true })
 
 
 const Comments = mongoose.model("Comments", commentsSchema);

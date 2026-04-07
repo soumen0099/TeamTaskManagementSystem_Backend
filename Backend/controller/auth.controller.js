@@ -4,7 +4,9 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-export const registerUser = async (req, res) => {};
+export const registerUser = async (req, res) => {
+  
+};
 
 
 export const loginUser = async (req, res) => {};

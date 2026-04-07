@@ -19,27 +19,25 @@ const taskSchema = new mongoose.Schema({
     required:true
   },
   assignedTo:{
-    type: ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref:"Users"
   },
   createdById:{
-    type: ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref:"Users"
   },
   team:{
-    type: ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref:"Teams"
   },
   comments:[{
     user: {
-      type: ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Users"
     },
     text: String,
-    createdAt: Date,
-    updateAt: Date
   }]
-})
+},{ timestamps: true })
 
 
 const Tasks = mongoose.model("Tasks",taskSchema);
