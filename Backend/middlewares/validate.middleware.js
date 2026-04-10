@@ -17,4 +17,5 @@ export const validLogin = (req,res,next) => {
       message:"All fields are required"
     })
   }
+  next();
 }
