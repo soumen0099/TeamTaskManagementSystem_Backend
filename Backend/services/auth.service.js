@@ -35,8 +35,46 @@ export const register = async (userName, email, password) => {
 
 export const login = async (email, password) => {
 
+  const user = await User.findOne({email});
+  if(!user){
+    throw{
+      statusCode:404,
+      message:"User not found"
+    }
+  }
+
+  const isMatch = await user.comparePassword(password);
+
+  if(!isMatch){
+    throw{
+      statusCode:400,
+      message:"Invalid credentials"
+    }
+  }
+
+
+  const token = await jwt.sign({
+    id: user._id,
+    email: user.email,
+    role: user.role
+    },process.env.JWT_SECRET, {expiresIn:"7d"})
+
+
+  return{
+    token
+  }
 }
 
 export const profile = async (userId) => {
 
+  const user = await User.findById(userId).select("-password");
+
+  if(!user){
+    throw{
+      statusCode: 404,
+      message:"User not found"
+    }
+  }
+
+  return user
 }
