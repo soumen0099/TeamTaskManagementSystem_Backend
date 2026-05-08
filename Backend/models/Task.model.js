@@ -1,46 +1,48 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
 const taskSchema = new mongoose.Schema({
-  title:{
-    type:String,
-    required:true
+  title: {
+    type: String,
+    required: true
   },
-  description:{
-    type:String,
-    required:true
+  description: {
+    type: String,
+    required: true
   },
-  priority:{
-    type:String,
-    enum:["Low","Medium","High"],
-    required:true
+  priority: {
+    type: String,
+    enum: ["Low", "Medium", "High"],
+    required: true
   },
-  dueDate:{
-    type:Date,
-    required:true
+  dueDate: {
+    type: Date,
+    required: true
   },
-  assignedTo:{
+  assignedTo: {
     type: mongoose.Schema.Types.ObjectId,
-    ref:"Users"
+    ref: "Users"
   },
-  createdById:{
+  createdBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref:"Users"
+    ref: "Users",
+    required: true
   },
-  team:{
+  team: {
     type: mongoose.Schema.Types.ObjectId,
-    ref:"Teams"
+    ref: "Teams"
   },
-  comments:[{
+  comments: [{
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users"
     },
-    text: String,
+    text: {
+      type: String,
+      required: true
+    }
   }]
-},{ timestamps: true })
+}, { timestamps: true });
 
-
-const Tasks = mongoose.model("Tasks",taskSchema);
-
+const Tasks = mongoose.model("Tasks", taskSchema);
 
 export default Tasks;

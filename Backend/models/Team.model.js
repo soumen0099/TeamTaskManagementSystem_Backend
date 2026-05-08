@@ -18,8 +18,8 @@ const TeamsSchema = new mongoose.Schema({
   members:[
     {
       user: {
-        type: ObjectId,
-        ref: "User"
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users"
       },
       role:{
         type: String,
@@ -28,10 +28,10 @@ const TeamsSchema = new mongoose.Schema({
       }
     }
   ],
-  task: {
+  tasks: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Tasks"
-  }
+  }]
 },{ timestamps: true })
 
 

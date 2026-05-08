@@ -14,8 +14,8 @@ export const verifyToken = (req,res,next) => {
 
    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-   req.user = decoded; 
-
+   req.user = decoded;
+   req.user._id = decoded.id;
 
    next();
     
@@ -25,3 +25,13 @@ export const verifyToken = (req,res,next) => {
    })
  }
 }
+
+export const authorize = (requiredRoles) => {
+  return (req, res, next) => {
+    if (!requiredRoles.includes(req.user.role)) {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+    next();
+  }
+}
+//when router can use delete method then we can use this middleware to check if the user is admin or not
