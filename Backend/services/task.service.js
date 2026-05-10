@@ -42,16 +42,75 @@ export const createTask = async (createData) => {
   }
 }
 
-export const readTask = async (req) => {
+export const readTask = async (readData) => {
+  const tasksExists = await Tasks.find(
+    {createdBy: readData.createdBy}
+  )
+
+  return{
+    message:"Tasks fetched successfully",
+    tasks: tasksExists
+  }
 
 }
 
 
-export const updateTask = async (req) => {
+export const updateTask = async (taskId, userID, updateData) => {
+
+  const findTask = await Tasks.findById(taskId);
+  if(!findTask){
+    throw{
+      statusCode:404,
+      message:"Task not found"
+    }
+  }
+
+  const ownerCheck = findTask.createdBy.toString() === userID;
+  if(!ownerCheck){
+    throw{
+      statusCode:403,
+      message:"You are not authorized to update this task"
+    }
+  }
+
+  // update data
+  if(updateData.title) findTask.title = updateData.title;
+  if(updateData.description) findTask.description = updateData.description;
+  if(updateData.priority) findTask.priority = updateData.priority;
+  if(updateData.dueDate) findTask.dueDate = updateData.dueDate
+
+   await findTask.save();
+
+   return{
+    message:"Task updated successfully",
+    task: findTask
+   }
 
 }
 
 
-export const deleteTask = async (req) => {
+export const deleteTask = async (taskId, userID) => {
+
+  const checkTask = await Tasks.findById(taskId);
+  if(!checkTask){
+    throw{
+      statusCode:404,
+      message:"Task not found"
+    }
+  }
+
+  const ownerCheck = checkTask.createdBy.toString() === userID;
+  if(!ownerCheck){
+    throw{
+      statusCode:403,
+      message:"You are not authorized to delete this task"
+    }
+  }
+   await checkTask.deleteOne();
+    
+return{
+  message:"Task deleted successfully",
+  task: checkTask
+}
 
 }

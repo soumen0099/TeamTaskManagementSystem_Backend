@@ -12,7 +12,7 @@ const connectDB = async () => {
 		serverSelectionTimeoutMS: 10000,
 	});
 
-	console.log("MongoDB connected successfully");
+	console.log("MongoDB connected successfully ✔️");
 };
 
 export default connectDB;

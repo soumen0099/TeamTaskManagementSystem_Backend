@@ -5,7 +5,11 @@ import { verifyToken } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 
-router.post('/', verifyToken, taskController.createTaskController);
+router.post('/create', verifyToken, taskController.createTaskController);
+router.get('/read', verifyToken, taskController.readTaskController);
+router.put('/update/:id', verifyToken, taskController.updateTaskController);
+router.delete('/delete/:id', verifyToken, taskController.deleteTaskController);
+
 
 export default router;
 
