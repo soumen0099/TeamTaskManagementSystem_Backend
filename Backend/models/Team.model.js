@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 
-const TeamsSchema = new mongoose.Schema({
+const TeamSchema = new mongoose.Schema({
   teamName:{
     type:String,
     required:true,
@@ -13,13 +13,15 @@ const TeamsSchema = new mongoose.Schema({
   },
   owner:{
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Users"
+    ref: "Users",
+    required:true
   },
   members:[
     {
       user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Users"
+        ref: "Users",
+        required:true
       },
       role:{
         type: String,
@@ -35,7 +37,7 @@ const TeamsSchema = new mongoose.Schema({
 },{ timestamps: true })
 
 
-const Teams = mongoose.model("Teams", TeamsSchema);
+const Team = mongoose.model("Team", TeamSchema);
 
 
-export default Teams; 
+export default Team; 
