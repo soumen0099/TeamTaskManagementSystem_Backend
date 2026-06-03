@@ -7,9 +7,17 @@ export const register = async (userName, email, password) => {
   const existingUser = await User.findOne({email});
   if(existingUser){
     throw {
-      statusCode:400,
-      message:"User already exists"
+      statusCode:409,
+      message:"An account with this email already exists"
     }
+  }
+
+  const existingUserName = await User.findOne({ userName });
+  if (existingUserName) {
+    throw {
+      statusCode: 409,
+      message: "This username is already taken"
+    };
   }
 
   const user = await User.create({
@@ -59,15 +67,26 @@ export const login = async (email, password) => {
     role: user.role
     },process.env.JWT_SECRET, {expiresIn:"7d"})
 
+  const userData = user.toObject();
+  delete userData.password;
 
   return{
-    token
+    token,
+    user: userData
   }
 }
 
 export const profile = async (userId) => {
 
-  const user = await User.findById(userId).select("-password");
+  const user = await User.findById(userId)
+    .select("-password")
+    .populate({
+      path: "team",
+      populate: [
+        { path: "owner", select: "-password" },
+        { path: "members.user", select: "-password" }
+      ]
+    });
 
   if(!user){
     throw{
@@ -78,3 +97,22 @@ export const profile = async (userId) => {
 
   return user
 }
+
+export const updateProfilePicture = async (userId, profilePicture) => {
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw {
+      statusCode: 404,
+      message: "User not found"
+    };
+  }
+
+  user.profilePicture = profilePicture;
+  await user.save();
+
+  const userData = user.toObject();
+  delete userData.password;
+
+  return userData;
+};

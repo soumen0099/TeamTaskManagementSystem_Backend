@@ -1,4 +1,4 @@
-import Team from "../models/team.model.js";
+import Team from "../models/Team.model.js";
 import User from "../models/User.model.js";
 
 
@@ -23,6 +23,7 @@ if(existingTeam){
 
 const teamCreate = await Team.create({
   teamName: teamName,
+  teamDescription: description,
   owner: owner,
   members: [
   {
@@ -31,6 +32,9 @@ const teamCreate = await Team.create({
   }
 ]
   })
+
+  // Synchronize team owner profile team array
+  await User.findByIdAndUpdate(owner, { $addToSet: { team: teamCreate._id } });
 
   return {
     message:"Team created successfully",
@@ -75,6 +79,10 @@ export const addMember = async (teamId, loggedInUserId, memberUserId) => {
     role:"member"
   })
   await team.save()
+
+  // Synchronize added user profile team array
+  await User.findByIdAndUpdate(memberUserId, { $addToSet: { team: teamId } });
+
   return{
     message: "Member added successfully",
   }
@@ -107,6 +115,10 @@ if (!owner) {
 
   team.members = team.members.filter(member => member.user.toString() !== memberUserId.toString());
   await team.save()
+
+  // Synchronize removed user profile team array
+  await User.findByIdAndUpdate(memberUserId, { $pull: { team: teamId } });
+
   return{
     message: "Member removed successfully"
   }

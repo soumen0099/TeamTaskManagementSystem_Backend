@@ -18,6 +18,11 @@ const taskSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
+  status: {
+    type: String,
+    enum: ["To Do", "In Progress", "Review", "Done"],
+    default: "To Do"
+  },
   assignedTo: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Users"
@@ -29,7 +34,7 @@ const taskSchema = new mongoose.Schema({
   },
   team: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Teams"
+    ref: "Team"
   },
   comments: [{
     user: {
